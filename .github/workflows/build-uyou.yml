@@ -25,11 +25,6 @@ on:
         default: "3.0.4"
         required: true
         type: string
-      decrypted_youtube_url:
-        description: "Direct URL of the decrypted YouTube IPA"
-        default: ""
-        required: false
-        type: string
       bundle_id:
         description: "Modify the bundle ID"
         default: "com.google.ios.youtube"
@@ -47,11 +42,6 @@ on:
         type: string
       upload_artifact:
         description: "Upload IPA as artifact"
-        default: false
-        required: false
-        type: boolean
-      create_release:
-        description: "Create a draft release"
         default: false
         required: false
         type: boolean
@@ -164,7 +154,7 @@ jobs:
         env:
           YOUTUBE_IPA_URL: ${{ secrets.YOUTUBE_IPA_URL }}
         run: |
-          URL_YT="${YOUTUBE_IPA_URL:-${{ inputs.decrypted_youtube_url }}}" 
+          URL_YT="$YOUTUBE_IPA_URL" 
           if [ -z "$URL_YT" ]; then echo "::error::Set YOUTUBE_IPA_URL repository secret"; exit 1; fi
           echo ::add-mask::$URL_YT
           echo URL_YT=$URL_YT >> $GITHUB_ENV
