@@ -12,7 +12,7 @@ jobs:
 
       - name: Check YouTube version
         run: |
-          grep -Eq '^YOUTUBE_VERSION = 21\.45\.4$' Makefile
+          grep -Fq 'YOUTUBE_VERSION = 21.45.4' Makefile
           echo "YouTube target is 21.45.4"
 
       - name: Check source folders
