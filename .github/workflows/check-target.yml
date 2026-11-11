@@ -1,0 +1,22 @@
+
+name: Check uYouEnhanced target
+
+on:
+  workflow_dispatch:
+
+jobs:
+  check-target:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Check YouTube version
+        run: |
+          grep -Eq '^YOUTUBE_VERSION = 21\.45\.4$' Makefile
+          echo "YouTube target is 21.45.4"
+
+      - name: Check source folders
+        run: |
+          test -d Sources
+          test -d Tweaks
+          echo "Source folders found"
