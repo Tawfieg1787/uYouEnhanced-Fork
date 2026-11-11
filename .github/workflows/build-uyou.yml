@@ -24,7 +24,7 @@ on:
       decrypted_youtube_url:
         description: "Direct URL of the decrypted YouTube IPA"
         default: ""
-        required: true
+        required: false
         type: string
       bundle_id:
         description: "Modify the bundle ID"
@@ -149,8 +149,11 @@ jobs:
           chmod +x /usr/local/bin/tbd
 
       - name: Hash YT ipa url
+        env:
+          YOUTUBE_IPA_URL: ${{ secrets.YOUTUBE_IPA_URL }}
         run: |
-          URL_YT="$(jq -r '.inputs.decrypted_youtube_url' $GITHUB_EVENT_PATH)"
+          URL_YT="${YOUTUBE_IPA_URL:-${{ inputs.decrypted_youtube_url }}}" 
+          if [ -z "$URL_YT" ]; then echo "::error::Set YOUTUBE_IPA_URL repository secret"; exit 1; fi
           echo ::add-mask::$URL_YT
           echo URL_YT=$URL_YT >> $GITHUB_ENV
 
