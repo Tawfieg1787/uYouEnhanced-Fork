@@ -4,6 +4,10 @@
 name: Build uYouEnhanced (21.45.4)
 
 on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/build-uyou.yml'
   workflow_dispatch:
     inputs:
       build_ffmpeg:
@@ -67,7 +71,15 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
+  validate:
+    if: github.event_name == 'push'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Workflow registered
+        run: echo 'Build workflow registered. Use Run workflow for a manual build.'
+
   build:
+    if: github.event_name == 'workflow_dispatch'
     name: Build uYouEnhanced
     runs-on: macos-latest
     permissions:
